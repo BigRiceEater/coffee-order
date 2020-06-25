@@ -36,9 +36,11 @@ define([
     }
     $progressBar.css({ width: `+=${newValue}%` });
     $progressBar.attr('aria-valuenow', newValue);
-
     if (stopTimer) {
-      $order.find('.remove-coffee').trigger('click');
+      // let animation finish, $.animate(cb) still won't work
+      setTimeout(function () {
+        $order.find('.remove-coffee').trigger('click');
+      }, 500);
     }
   }
 
@@ -65,10 +67,10 @@ define([
 
   function handleRemoveCoffee() {
     let $order = $(this).closest('.coffee-order');
+    removeTimer($order.attr('data-orderId'));
     $order.slideUp('fast', function () {
       $(this).remove();
     });
-    removeTimer($order.attr('data-orderId'));
   }
 
   return { handleAddCoffee };
