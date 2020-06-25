@@ -1,4 +1,4 @@
-<li class="media my-2 coffee-order">
+<li class="media my-2 coffee-order" data-orderId="{{id}}">
   <i
     class="fa fa-coffee fa-4x mr-3"
     aria-hidden="true"
@@ -13,6 +13,16 @@
       <span>
         <span class="font-weight-bold">Time :</span> {{submittedAt}}
       </span>
+    </div>
+    <div class="progress">
+      <div
+        class="progress-bar progress-bar-striped progress-bar-animated"
+        role="progressbar"
+        aria-valuenow="0"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        style="width: 0%;"
+      ></div>
     </div>
   </div>
   <button type="button" class="close remove-coffee" aria-label="Close">

@@ -12,6 +12,7 @@ define(['jquery', 'moment'], function ($, moment) {
 
   $modal.find('.add-coffee').click(function () {
     let order = {
+      id: `${Date.now()}`,
       personName: $orderBy.val() || 'Guest',
       coffeeName: $selectCoffee.val(),
       submittedAt: moment().format('h:mma'),
