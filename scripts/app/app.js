@@ -1,10 +1,14 @@
-define(['jquery', 'app/coffee'], function ($, coffee) {
+define(['jquery', 'app/coffee', 'app/chooseCoffee'], function (
+  $,
+  coffee,
+  coffeeModal
+) {
   function start() {
     $(document).ready(setupActions);
   }
 
   function setupActions() {
-    $('.add-coffee').click(coffee.handleAddCoffee);
+    coffeeModal.registerHandleAddCoffee(coffee.handleAddCoffee);
   }
   return { start };
 });

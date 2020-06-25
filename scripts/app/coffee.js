@@ -4,10 +4,8 @@ define(['jquery', 'mustache', 'bootstrap'], function ($, mustache) {
 
   $coffeeList.delegate('.remove-coffee', 'click', handleRemoveCoffee);
 
-  function handleAddCoffee() {
-    $coffeeList.append(
-      mustache.render(template, { coffeeName: 'Latte', personName: 'John Doe' })
-    );
+  function handleAddCoffee(coffee) {
+    $coffeeList.append(mustache.render(template, coffee));
   }
 
   function handleRemoveCoffee() {
