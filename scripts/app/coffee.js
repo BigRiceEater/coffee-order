@@ -1,4 +1,4 @@
-define(['jquery', 'mustache'], function ($, mustache) {
+define(['jquery', 'mustache', 'bootstrap'], function ($, mustache) {
   $coffeeList = $('#coffee-list');
   template = $('#coffee-order-template').html();
 
