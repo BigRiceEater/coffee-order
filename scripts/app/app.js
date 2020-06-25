@@ -1,19 +1,10 @@
-define(['jquery'], function ($) {
-  var $coffeeOrderTemplate;
-  var $coffeeList;
-
+define(['jquery', 'app/coffee'], function ($, coffee) {
   function start() {
     $(document).ready(setupActions);
   }
 
   function setupActions() {
-    $coffeeOrderTemplate = $('#coffee-order-template');
-    $coffeeList = $('#coffee-list');
-    $('.add-coffee').click(handleAddCoffee);
-  }
-
-  function handleAddCoffee() {
-    $coffeeList.append($coffeeOrderTemplate.html());
+    $('.add-coffee').click(coffee.handleAddCoffee);
   }
   return { start };
 });
