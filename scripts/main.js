@@ -8,6 +8,8 @@ requirejs.config({
       'https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min',
     mustache:
       'https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.0.1/mustache.min',
+    moment:
+      'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min',
   },
   shim: {
     bootstrap: ['jquery'],

@@ -1,4 +1,4 @@
-define(['jquery'], function ($) {
+define(['jquery', 'moment'], function ($, moment) {
   let $modal = $('#chooseCoffeeModal');
   let $form = $modal.find('form');
 
@@ -14,6 +14,7 @@ define(['jquery'], function ($) {
     let order = {
       personName: $orderBy.val() || 'Guest',
       coffeeName: $selectCoffee.val(),
+      submittedAt: moment().format('h:mma'),
     };
     $modal.modal('hide');
     handleAddCoffee(order);
