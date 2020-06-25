@@ -1,9 +1,11 @@
 define(['jquery', 'mustache'], function ($, mustache) {
   $coffeeList = $('#coffee-list');
-  $coffeeOrderTemplate = $('#coffee-order-template');
+  template = $('#coffee-order-template').html();
 
   function handleAddCoffee() {
-    $coffeeList.append($coffeeOrderTemplate.html());
+    $coffeeList.append(
+      mustache.render(template, { coffeeName: 'Latte', personName: 'John Doe' })
+    );
   }
 
   return { handleAddCoffee };
