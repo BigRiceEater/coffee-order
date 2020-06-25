@@ -11,7 +11,11 @@ define(['jquery', 'mustache'], function ($, mustache) {
   }
 
   function handleRemoveCoffee() {
-    $(this).closest('.coffee-order').remove();
+    $(this)
+      .closest('.coffee-order')
+      .slideUp('fast', function () {
+        $(this).remove();
+      });
   }
 
   return { handleAddCoffee };
