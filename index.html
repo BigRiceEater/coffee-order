@@ -66,7 +66,25 @@
             </button>
           </div>
           <div class="modal-body">
-            <form></form>
+            <form>
+              <div class="form-group">
+                <label for="inputOrderBy">Order By</label>
+                <input
+                  class="form-control"
+                  id="inputOrderBy"
+                  placeholder="name"
+                />
+              </div>
+              <div class="form-group">
+                <label for="selectCoffeeDrink">Coffee</label>
+                <select class="form-control" id="selectCoffeeDrink">
+                  <option>Latte</option>
+                  <option>Expresso</option>
+                  <option>Mocha</option>
+                  <option>Black</option>
+                </select>
+              </div>
+            </form>
           </div>
           <div class="modal-footer">
             <button
@@ -76,7 +94,9 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary">Place Order</button>
+            <button type="button" class="btn btn-primary add-coffee">
+              Place Order
+            </button>
           </div>
         </div>
       </div>
