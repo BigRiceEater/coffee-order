@@ -19,7 +19,7 @@ define([
 
     let timer = setInterval(function () {
       incrementCoffeeProgress($order);
-    }, 1000);
+    }, Math.floor(Math.random() * 5000 + 1000));
 
     timers.push({ for: coffee.id, timer });
   }
