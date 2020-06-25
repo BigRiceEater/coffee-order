@@ -1,7 +1,10 @@
-define(['jquery', 'mustache', 'bootstrap'], function ($, mustache) {
+define([
+  'jquery',
+  'mustache',
+  'text!templates/coffee-order.html',
+  'bootstrap',
+], function ($, mustache, template) {
   $coffeeList = $('#coffee-list');
-  template = $('#coffee-order-template').html();
-
   $coffeeList.delegate('.remove-coffee', 'click', handleRemoveCoffee);
 
   function handleAddCoffee(coffee) {
