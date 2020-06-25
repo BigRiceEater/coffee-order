@@ -9,6 +9,12 @@
       integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
       crossorigin="anonymous"
     />
+    <link
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+      crossorigin="anonymous"
+    />
     <title>Coffee</title>
   </head>
   <body>
@@ -28,17 +34,23 @@
       </div>
       <div class="row">
         <div class="col">
-          <div id="coffee-list"></div>
+          <ul id="coffee-list" class="list-unstyled my-3"></ul>
         </div>
       </div>
     </div>
 
     <template id="coffee-order-template">
-      <div class="my-3 p-3 border rounded container">
-        <h5>
-          New Coffee
-        </h5>
-      </div>
+      <li class="media my-2">
+        <i class="fa fa-coffee fa-4x mr-3" aria-hidden="true"></i>
+        <div class="media-body">
+          <h5 class="mt-0 mb-1">List-based media object</h5>
+          Cras sit amet nibh libero, in gravida nulla. Nulla vel metus
+          scelerisque ante sollicitudin.
+        </div>
+        <button type="button" class="close" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </li>
     </template>
 
     <script data-main="scripts/main.js" src="scripts/require.js"></script>
