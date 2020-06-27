@@ -2,10 +2,12 @@ define([
   'jquery',
   'mustache',
   'text!templates/coffee-order.html',
+  'text!templates/coffee-toast.html',
   'app/constants',
   'bootstrap',
-], function ($, mustache, template, constants) {
+], function ($, mustache, template, toastView, constants) {
   let $coffeeList = $('#coffee-list');
+  let $toastContainer = $('#toast-container');
   let maxProgressJump = 50;
   let timers = [];
 
@@ -22,6 +24,8 @@ define([
     }, Math.floor(Math.random() * 5000 + 1000));
 
     timers.push({ for: coffee.id, timer });
+
+    $toastContainer.append(toastView);
   }
 
   function incrementCoffeeProgress($order) {
