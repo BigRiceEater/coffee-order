@@ -26,6 +26,7 @@ define([
     timers.push({ for: coffee.id, timer });
 
     $toastContainer.append(toastView);
+    $('.toast').toast('show');
   }
 
   function incrementCoffeeProgress($order) {
