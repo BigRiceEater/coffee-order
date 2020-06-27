@@ -2,12 +2,11 @@ define([
   'jquery',
   'mustache',
   'text!templates/coffee-order.html',
-  'text!templates/coffee-toast.html',
   'app/constants',
+  'app/notification',
   'bootstrap',
-], function ($, mustache, template, toastView, constants) {
+], function ($, mustache, template, constants, notification) {
   let $coffeeList = $('#coffee-list');
-  let $toastContainer = $('#toast-container');
   let maxProgressJump = 50;
   let timers = [];
 
@@ -25,19 +24,10 @@ define([
 
     timers.push({ for: coffee.id, timer });
 
-    $toastContainer.append(
-      mustache.render(toastView, {
-        title: '',
-        ago: 'just now',
-        message: `${coffee.personName} ordered a ${coffee.coffeeName}`,
-      })
-    );
-    $('.toast').toast({ delay: 5000, animation: false });
-    $('.toast').toast('show');
-    $('.toast').on('hide.bs.toast', function () {
-      $(this).slideUp('slow', function () {
-        $(this).remove();
-      });
+    notification.showToast({
+      title: '',
+      ago: 'just now',
+      message: `${coffee.personName} ordered a ${coffee.coffeeName}`,
     });
   }
 
