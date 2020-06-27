@@ -26,7 +26,13 @@ define([
     timers.push({ for: coffee.id, timer });
 
     $toastContainer.append(toastView);
+    $('.toast').toast({ delay: 5000, animation: false });
     $('.toast').toast('show');
+    $('.toast').on('hide.bs.toast', function () {
+      $(this).slideUp('slow', function () {
+        $(this).remove();
+      });
+    });
   }
 
   function incrementCoffeeProgress($order) {
