@@ -16,6 +16,7 @@ define([
     let html = mustache.render(view, data);
     $toastContainer.append(html);
     let $toast = $toastContainer.find('.toast').last();
+    $toast.find('.toast-header').addClass('bg-primary text-white');
     $toast.toast(options);
     $toast.hide(); // overrides bs toast default behaviour
     $toast.toast('show');

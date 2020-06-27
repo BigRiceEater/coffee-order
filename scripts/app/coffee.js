@@ -25,7 +25,7 @@ define([
     timers.push({ for: coffee.id, timer });
 
     notification.showToast({
-      title: '',
+      title: 'Order',
       ago: 'just now',
       message: `${coffee.personName} ordered a ${coffee.coffeeName}`,
     });
