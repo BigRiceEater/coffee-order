@@ -15,6 +15,11 @@ define(['jquery', 'mustache', 'text!templates/coffee-toast.html'], function (
     let $toast = $toastContainer.find('.toast').last();
     $toast.toast(options);
     $toast.toast('show');
+    $toast.on('hidden.bs.toast', removeToast);
+  }
+
+  function removeToast() {
+    $(this).remove();
   }
 
   return { showToast };
