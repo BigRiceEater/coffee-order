@@ -4,10 +4,12 @@ define(['jquery', 'mustache', 'text!templates/coffee-toast.html'], function (
   view
 ) {
   const $toastContainer = $('#toast-container');
+  $toastContainer.delegate('.close-toast', 'click', removeToast);
   const options = {
-    delay: 5000,
+    autohide: false,
     animation: false,
   };
+  const delay = 5000;
 
   function showToast(data) {
     let html = mustache.render(view, data);
@@ -15,11 +17,20 @@ define(['jquery', 'mustache', 'text!templates/coffee-toast.html'], function (
     let $toast = $toastContainer.find('.toast').last();
     $toast.toast(options);
     $toast.toast('show');
-    $toast.on('hidden.bs.toast', removeToast);
+    setTimeout(function () {
+      removeToast($toast);
+    }, delay);
   }
 
-  function removeToast() {
-    $(this).remove();
+  function removeToast($toast = null) {
+    let $target = $(this);
+    if ($toast) {
+      $target = $toast;
+    }
+
+    $target.closest('.toast').slideUp('slow', function () {
+      $(this).remove();
+    });
   }
 
   return { showToast };
