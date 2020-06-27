@@ -1,8 +1,9 @@
-define(['jquery', 'mustache', 'text!templates/coffee-toast.html'], function (
-  $,
-  mustache,
-  view
-) {
+define([
+  'jquery',
+  'mustache',
+  'text!templates/coffee-toast.html',
+  'jqueryui',
+], function ($, mustache, view) {
   const $toastContainer = $('#toast-container');
   $toastContainer.delegate('.close-toast', 'click', removeToast);
   const options = {
@@ -16,7 +17,9 @@ define(['jquery', 'mustache', 'text!templates/coffee-toast.html'], function (
     $toastContainer.append(html);
     let $toast = $toastContainer.find('.toast').last();
     $toast.toast(options);
+    $toast.hide(); // overrides bs toast default behaviour
     $toast.toast('show');
+    $toast.show('slide', { direction: 'right' }, 500);
     setTimeout(function () {
       removeToast($toast);
     }, delay);
