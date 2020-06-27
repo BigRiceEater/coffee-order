@@ -25,7 +25,13 @@ define([
 
     timers.push({ for: coffee.id, timer });
 
-    $toastContainer.append(toastView);
+    $toastContainer.append(
+      mustache.render(toastView, {
+        title: '',
+        ago: 'just now',
+        message: `${coffee.personName} ordered a ${coffee.coffeeName}`,
+      })
+    );
     $('.toast').toast({ delay: 5000, animation: false });
     $('.toast').toast('show');
     $('.toast').on('hide.bs.toast', function () {
