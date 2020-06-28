@@ -5,7 +5,9 @@ define([
   'jqueryui',
 ], function ($, mustache, view) {
   const $toastContainer = $('#toast-container');
-  $toastContainer.delegate('.close-toast', 'click', removeToast);
+  $toastContainer.delegate('.close-toast', 'click', function () {
+    removeToast($(this));
+  });
   const options = {
     autohide: false,
     animation: false,
