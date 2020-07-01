@@ -5,4 +5,7 @@ define({
     mocha: 'Mocha',
     black: 'Black',
   },
+  events: {
+    newCoffee: 'new-coffee-event',
+  },
 });

@@ -2,13 +2,13 @@ define([
   'jquery',
   'mustache',
   'text!templates/coffee-order.html',
-  'app/notification',
   'bootstrap',
-], function ($, mustache, template, notification) {
+], function ($, mustache, template) {
   let $coffeeList = $('#coffee-list');
   let $placeholder = $('.placeholder-empty-orders');
   let maxProgressJump = 50;
   let timers = [];
+  let onCoffeeAddedCallback = null;
 
   $coffeeList.delegate('.remove-coffee', 'click', handleRemoveCoffee);
 
@@ -23,11 +23,9 @@ define([
 
     timers.push({ for: coffee.id, timer });
 
-    notification.showToast({
-      title: 'Order',
-      ago: 'just now',
-      message: `${coffee.personName} ordered a ${coffee.coffeeName}`,
-    });
+    if (onCoffeeAddedCallback) {
+      onCoffeeAddedCallback(coffee);
+    }
 
     checkEmptyOrders();
   }
@@ -73,5 +71,9 @@ define([
       : $placeholder.hide(500);
   }
 
-  return { handleAddCoffee };
+  function onCoffeeAdded(fn) {
+    onCoffeeAddedCallback = fn;
+  }
+
+  return { handleAddCoffee, onCoffeeAdded };
 });
