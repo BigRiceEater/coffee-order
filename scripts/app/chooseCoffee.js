@@ -16,6 +16,7 @@ define(['jquery', 'moment'], function ($, moment) {
       personName: $orderBy.val() || 'Guest',
       coffeeName: $selectCoffee.val(),
       submittedAt: moment().format('h:mma'),
+      image: 'img/latte.jpg',
     };
     $modal.modal('hide');
     handleAddCoffee(order);
