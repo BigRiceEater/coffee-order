@@ -9,8 +9,8 @@ define([
   }
 
   function setupActions() {
-    coffeeModal.registerHandleAddCoffee(coffee.handleAddCoffee);
-    coffee.coffeeAdded(function (coffee) {
+    coffeeModal.onCoffeeChosen(coffee.handleAddCoffee);
+    coffee.onCoffeeAdded(function (coffee) {
       notification.showToast({
         title: 'Order',
         ago: 'just now',
