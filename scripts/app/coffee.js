@@ -7,6 +7,7 @@ define([
   'bootstrap',
 ], function ($, mustache, template, constants, notification) {
   let $coffeeList = $('#coffee-list');
+  let $placeholder = $('.placeholder-empty-orders');
   let maxProgressJump = 50;
   let timers = [];
 
@@ -29,6 +30,8 @@ define([
       ago: 'just now',
       message: `${coffee.personName} ordered a ${coffee.coffeeName}`,
     });
+
+    checkEmptyOrders();
   }
 
   function incrementCoffeeProgress($order) {
@@ -77,7 +80,14 @@ define([
     removeTimer($order.attr('data-orderId'));
     $order.slideUp('fast', function () {
       $(this).remove();
+      checkEmptyOrders();
     });
+  }
+
+  function checkEmptyOrders() {
+    $coffeeList.find('li').length < 1
+      ? $placeholder.show(500)
+      : $placeholder.hide(500);
   }
 
   return { handleAddCoffee };
