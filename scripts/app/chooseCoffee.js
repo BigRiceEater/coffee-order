@@ -1,4 +1,4 @@
-define(['jquery', 'moment'], function ($, moment) {
+define(['jquery', 'moment', 'app/constants'], function ($, moment, constants) {
   let $modal = $('#chooseCoffeeModal');
   let $form = $modal.find('form');
 
@@ -16,7 +16,7 @@ define(['jquery', 'moment'], function ($, moment) {
       personName: $orderBy.val() || 'Guest',
       coffeeName: $selectCoffee.val(),
       submittedAt: moment().format('h:mma'),
-      image: 'img/latte.jpg',
+      image: getImageByCoffee($selectCoffee.val()),
     };
     $modal.modal('hide');
     handleAddCoffee(order);
@@ -29,6 +29,21 @@ define(['jquery', 'moment'], function ($, moment) {
 
   function registerHandleAddCoffee(callback) {
     handleAddCoffee = callback;
+  }
+
+  function getImageByCoffee(coffeeName) {
+    switch (coffeeName) {
+      case constants.coffee.latte:
+        return 'img/latte.jpg';
+      case constants.coffee.expresso:
+        return 'img/expresso.jpg';
+      case constants.coffee.black:
+        return 'img/black.jpg';
+      case constants.coffee.mocha:
+        return 'img/mocha.jpg';
+      default:
+        return null;
+    }
   }
 
   return {

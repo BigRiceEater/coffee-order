@@ -14,7 +14,6 @@ define([
   $coffeeList.delegate('.remove-coffee', 'click', handleRemoveCoffee);
 
   function handleAddCoffee(coffee) {
-    coffee.iconColor = getCoffeeIconColor(coffee.coffeeName);
     $coffeeList.append(mustache.render(template, coffee));
 
     let $order = $coffeeList.find('.coffee-order').last();
@@ -58,21 +57,6 @@ define([
     let record = timers.find((t) => t.for === id);
     clearInterval(record.timer);
     timers = timers.filter((t) => t.for !== id);
-  }
-
-  function getCoffeeIconColor(coffeeName) {
-    switch (coffeeName) {
-      case constants.coffee.latte:
-        return 'crimson';
-      case constants.coffee.expresso:
-        return 'gold';
-      case constants.coffee.mocha:
-        return 'saddleBrown';
-      case constants.coffee.black:
-        return 'black';
-      default:
-        return 'black';
-    }
   }
 
   function handleRemoveCoffee() {
