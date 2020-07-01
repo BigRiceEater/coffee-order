@@ -2,10 +2,9 @@ define([
   'jquery',
   'mustache',
   'text!templates/coffee-order.html',
-  'app/constants',
   'app/notification',
   'bootstrap',
-], function ($, mustache, template, constants, notification) {
+], function ($, mustache, template, notification) {
   let $coffeeList = $('#coffee-list');
   let $placeholder = $('.placeholder-empty-orders');
   let maxProgressJump = 50;
