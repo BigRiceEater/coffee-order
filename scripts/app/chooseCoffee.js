@@ -6,7 +6,7 @@ define(['jquery', 'moment', 'app/constants'], function ($, moment, constants) {
   let $selectCoffee = $form.find('#selectCoffeeDrink');
   let defaultCoffee = $form.find('option:first').val();
 
-  let handleAddCoffee = function () {
+  let onCoffeeChosenCallback = function () {
     console.error('handleAddCoffee not registered yet');
   };
 
@@ -19,7 +19,7 @@ define(['jquery', 'moment', 'app/constants'], function ($, moment, constants) {
       image: getImageByCoffee($selectCoffee.val()),
     };
     $modal.modal('hide');
-    handleAddCoffee(order);
+    onCoffeeChosenCallback(order);
   });
 
   $modal.on('hidden.bs.modal', function () {
@@ -27,8 +27,8 @@ define(['jquery', 'moment', 'app/constants'], function ($, moment, constants) {
     $selectCoffee.val(defaultCoffee);
   });
 
-  function registerHandleAddCoffee(callback) {
-    handleAddCoffee = callback;
+  function onCoffeeChosen(callback) {
+    onCoffeeChosenCallback = callback;
   }
 
   function getImageByCoffee(coffeeName) {
@@ -47,6 +47,6 @@ define(['jquery', 'moment', 'app/constants'], function ($, moment, constants) {
   }
 
   return {
-    registerHandleAddCoffee,
+    onCoffeeChosen,
   };
 });
