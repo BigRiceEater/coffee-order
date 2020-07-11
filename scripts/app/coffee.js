@@ -9,6 +9,7 @@ define([
   let maxProgressJump = 50;
   let timers = [];
   let onCoffeeAddedCallback = null;
+  var onCoffeeCompletedCallback = null;
 
   $coffeeList.delegate('.remove-coffee', 'click', handleRemoveCoffee);
 
@@ -18,7 +19,7 @@ define([
     let $order = $coffeeList.find('.coffee-order').last();
 
     let timer = setInterval(function () {
-      incrementCoffeeProgress($order);
+      incrementCoffeeProgress($order, coffee);
     }, Math.floor(Math.random() * 5000 + 1000));
 
     timers.push({ for: coffee.id, timer });
@@ -30,7 +31,7 @@ define([
     checkEmptyOrders();
   }
 
-  function incrementCoffeeProgress($order) {
+  function incrementCoffeeProgress($order, coffee) {
     let $progressBar = $order.find('.progress-bar');
     let currentValue = parseInt($progressBar.attr('aria-valuenow'));
     let increase = Math.floor(Math.random() * maxProgressJump);
@@ -46,6 +47,7 @@ define([
       // let animation finish, $.animate(cb) still won't work
       setTimeout(function () {
         $order.find('.remove-coffee').trigger('click');
+        if (onCoffeeCompletedCallback) onCoffeeCompletedCallback(coffee);
       }, 500);
     }
   }
@@ -74,6 +76,9 @@ define([
   function onCoffeeAdded(fn) {
     onCoffeeAddedCallback = fn;
   }
+  function onCoffeeCompleted(fn) {
+    onCoffeeCompletedCallback = fn;
+  }
 
-  return { handleAddCoffee, onCoffeeAdded };
+  return { handleAddCoffee, onCoffeeAdded, onCoffeeCompleted };
 });

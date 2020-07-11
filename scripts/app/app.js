@@ -17,6 +17,13 @@ define([
         message: `${coffee.personName} ordered a ${coffee.coffeeName}`,
       });
     });
+    coffee.onCoffeeCompleted(function (coffee) {
+      notification.showToast({
+        title: 'Completed',
+        ago: 'just now',
+        message: `${coffee.coffeeName} is done!`,
+      });
+    });
   }
   return { start };
 });
