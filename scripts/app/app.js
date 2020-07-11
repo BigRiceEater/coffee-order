@@ -12,10 +12,10 @@ define([
     coffeeModal.onCoffeeChosen(coffee.handleAddCoffee);
 
     let coffeeEvents = coffeeNotification.events;
-    coffee.onCoffeeAdded(function (coffee) {
+    coffee.on('new', function (coffee) {
       coffeeNotification.notify(coffeeEvents.newOrder, coffee);
     });
-    coffee.onCoffeeCompleted(function (coffee) {
+    coffee.on('completed', function (coffee) {
       coffeeNotification.notify(coffeeEvents.orderCompleted, coffee);
     });
   }

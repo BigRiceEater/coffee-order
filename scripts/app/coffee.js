@@ -11,6 +11,8 @@ define([
   let onCoffeeAddedCallback = null;
   var onCoffeeCompletedCallback = null;
 
+  var events = { new: 'new', completed: 'completed' };
+
   $coffeeList.delegate('.remove-coffee', 'click', handleRemoveCoffee);
 
   function handleAddCoffee(coffee) {
@@ -73,12 +75,18 @@ define([
       : $placeholder.hide(500);
   }
 
-  function onCoffeeAdded(fn) {
-    onCoffeeAddedCallback = fn;
-  }
-  function onCoffeeCompleted(fn) {
-    onCoffeeCompletedCallback = fn;
+  function on(eventType, fn) {
+    switch (eventType) {
+      case events.new:
+        onCoffeeAddedCallback = fn;
+        return true;
+      case events.completed:
+        onCoffeeCompletedCallback = fn;
+        return true;
+      default:
+        return false;
+    }
   }
 
-  return { handleAddCoffee, onCoffeeAdded, onCoffeeCompleted };
+  return { handleAddCoffee, events, on };
 });
