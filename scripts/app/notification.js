@@ -14,12 +14,17 @@ define([
   };
   const delay = 5000;
 
-  function showToast(data) {
+  function showToast(data, toastOptions = {}) {
     let html = mustache.render(view, data);
     $toastContainer.append(html);
     let $toast = $toastContainer.find('.toast').last();
-    $toast.find('.toast-header').addClass('bg-primary text-white');
-    $toast.find('.close-toast').addClass('text-white');
+
+    if (toastOptions.theme)
+      $toast.find('.toast-header').addClass(toastOptions.theme);
+    if (toastOptions.textColor) {
+      $toast.find('.toast-header').addClass(toastOptions.textColor);
+      $toast.find('.close-toast').addClass(toastOptions.textColor);
+    }
     $toast.toast(options);
     $toast.hide(); // overrides bs toast default behaviour
     $toast.toast('show');
