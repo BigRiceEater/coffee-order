@@ -2,27 +2,21 @@ define([
   'jquery',
   'app/coffee',
   'app/chooseCoffee',
-  'app/notification',
-], function ($, coffee, coffeeModal, notification) {
+  'app/coffeeNotification',
+], function ($, coffee, coffeeModal, coffeeNotification) {
   function start() {
     $(document).ready(setupActions);
   }
 
   function setupActions() {
     coffeeModal.onCoffeeChosen(coffee.handleAddCoffee);
+
+    let coffeeEvents = coffeeNotification.events;
     coffee.onCoffeeAdded(function (coffee) {
-      notification.showToast({
-        title: 'Order',
-        ago: 'just now',
-        message: `${coffee.personName} ordered a ${coffee.coffeeName}`,
-      });
+      coffeeNotification.notify(coffeeEvents.newOrder, coffee);
     });
     coffee.onCoffeeCompleted(function (coffee) {
-      notification.showToast({
-        title: 'Completed',
-        ago: 'just now',
-        message: `${coffee.coffeeName} is done!`,
-      });
+      coffeeNotification.notify(coffeeEvents.orderCompleted, coffee);
     });
   }
   return { start };
