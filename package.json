@@ -1,0 +1,27 @@
+{
+  "name": "coffee-order",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "requirejs": "^2.3.6",
+    "terser": "^4.8.0",
+    "uglify-js": "^3.10.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "r.js -o scripts/build.js ",
+    "min": "terser --compress --mangle -o build/main-built-min.js -- build/main-built.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BigRiceEater/coffee-order.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BigRiceEater/coffee-order/issues"
+  },
+  "homepage": "https://github.com/BigRiceEater/coffee-order#readme"
+}
