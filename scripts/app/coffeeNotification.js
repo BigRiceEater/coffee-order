@@ -1,15 +1,14 @@
-define(['jquery', 'app/notification'], function ($, notification) {
-  let events = {
-    newOrder: 'new-order',
-    orderCompleted: 'order-completed',
-  };
-
+define(['app/notification', 'app/constants'], function (
+  notification,
+  constants
+) {
   function notify(eventType, coffee) {
+    let event = constants.events.coffee;
     switch (eventType) {
-      case events.newOrder:
+      case event.new:
         notifyNewOrder(coffee);
         return true;
-      case events.orderCompleted:
+      case event.completed:
         notifyOrderCompleted(coffee);
         return true;
       default:
@@ -43,5 +42,5 @@ define(['jquery', 'app/notification'], function ($, notification) {
     notification.showToast(data, options);
   }
 
-  return { events, notify };
+  return { notify };
 });

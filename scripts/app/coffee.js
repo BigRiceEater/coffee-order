@@ -2,16 +2,15 @@ define([
   'jquery',
   'mustache',
   'text!templates/coffee-order.html',
+  'app/constants',
   'bootstrap',
-], function ($, mustache, template) {
+], function ($, mustache, template, constants) {
   let $coffeeList = $('#coffee-list');
   let $placeholder = $('.placeholder-empty-orders');
   let maxProgressJump = 50;
   let timers = [];
   let onCoffeeAddedCallback = null;
   var onCoffeeCompletedCallback = null;
-
-  var events = { new: 'new', completed: 'completed' };
 
   $coffeeList.delegate('.remove-coffee', 'click', handleRemoveCoffee);
 
@@ -76,11 +75,12 @@ define([
   }
 
   function on(eventType, fn) {
+    let event = constants.events.coffee;
     switch (eventType) {
-      case events.new:
+      case event.new:
         onCoffeeAddedCallback = fn;
         return true;
-      case events.completed:
+      case event.completed:
         onCoffeeCompletedCallback = fn;
         return true;
       default:
@@ -88,5 +88,5 @@ define([
     }
   }
 
-  return { handleAddCoffee, events, on };
+  return { handleAddCoffee, on };
 });

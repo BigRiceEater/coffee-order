@@ -6,6 +6,9 @@ define({
     black: 'Black',
   },
   events: {
-    newCoffee: 'new-coffee-event',
+    coffee: {
+      new: 'new-coffee',
+      completed: 'coffee-completed',
+    },
   },
 });
