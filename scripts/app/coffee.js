@@ -10,7 +10,8 @@ define([
   let maxProgressJump = 50;
   let timers = [];
   let onCoffeeAddedCallback = null;
-  var onCoffeeCompletedCallback = null;
+  let onCoffeeCompletedCallback = null;
+  let onCoffeeCancelCallback = null;
 
   $coffeeList.delegate('.remove-coffee', 'click', handleRemoveCoffee);
 
@@ -26,7 +27,7 @@ define([
     timers.push({ for: coffee.id, timer });
 
     if (onCoffeeAddedCallback) {
-      onCoffeeAddedCallback(coffee);
+      onCoffeeAddedCallback(coffee.id);
     }
 
     checkEmptyOrders();
@@ -48,7 +49,7 @@ define([
       // let animation finish, $.animate(cb) still won't work
       setTimeout(function () {
         $order.find('.remove-coffee').trigger('click');
-        if (onCoffeeCompletedCallback) onCoffeeCompletedCallback(coffee);
+        if (onCoffeeCompletedCallback) onCoffeeCompletedCallback(coffee.id);
       }, 500);
     }
   }
@@ -64,6 +65,10 @@ define([
     removeTimer($order.attr('data-orderId'));
     $order.slideUp('fast', function () {
       $(this).remove();
+      if (onCoffeeCancelCallback) {
+        let id = $order.attr('data-orderId');
+        onCoffeeCancelCallback(id);
+      }
       checkEmptyOrders();
     });
   }
@@ -82,6 +87,9 @@ define([
         return true;
       case event.completed:
         onCoffeeCompletedCallback = fn;
+        return true;
+      case event.cancel:
+        onCoffeeCancelCallback = fn;
         return true;
       default:
         return false;

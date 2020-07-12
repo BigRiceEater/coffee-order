@@ -26,9 +26,10 @@ define([
       $toast.find('.close-toast').addClass(toastOptions.textColor);
     }
     $toast.toast(options);
-    $toast.hide(); // overrides bs toast default behaviour
+    // $toast.hide(); // overrides bs toast default behaviour
     $toast.toast('show');
-    $toast.show('slide', { direction: 'right' }, 500);
+    $toast.css('width', '0px');
+    $toast.animate({ width: '15rem' }, 500);
     setTimeout(function () {
       removeToast($toast);
     }, delay);

@@ -10,7 +10,8 @@ define(['jquery', 'moment', 'app/constants'], function ($, moment, constants) {
     console.error('handleAddCoffee not registered yet');
   };
 
-  $modal.find('.add-coffee').click(function () {
+  $form.submit(function (e) {
+    e.preventDefault();
     let order = {
       id: `${Date.now()}`,
       personName: $orderBy.val() || 'Guest',
@@ -20,6 +21,10 @@ define(['jquery', 'moment', 'app/constants'], function ($, moment, constants) {
     };
     $modal.modal('hide');
     onCoffeeChosenCallback(order);
+  });
+
+  $modal.find('.add-coffee').click(function () {
+    $form.trigger('submit');
   });
 
   $modal.on('hidden.bs.modal', function () {
