@@ -425,6 +425,7 @@ define('app/constants',{
     coffee: {
       new: 'new-coffee',
       completed: 'coffee-completed',
+      cancel: 'coffee-cancel',
     },
   },
 });
@@ -441,7 +442,8 @@ define('app/coffee',[
   let maxProgressJump = 50;
   let timers = [];
   let onCoffeeAddedCallback = null;
-  var onCoffeeCompletedCallback = null;
+  let onCoffeeCompletedCallback = null;
+  let onCoffeeCancelCallback = null;
 
   $coffeeList.delegate('.remove-coffee', 'click', handleRemoveCoffee);
 
@@ -457,7 +459,7 @@ define('app/coffee',[
     timers.push({ for: coffee.id, timer });
 
     if (onCoffeeAddedCallback) {
-      onCoffeeAddedCallback(coffee);
+      onCoffeeAddedCallback(coffee.id);
     }
 
     checkEmptyOrders();
@@ -479,7 +481,7 @@ define('app/coffee',[
       // let animation finish, $.animate(cb) still won't work
       setTimeout(function () {
         $order.find('.remove-coffee').trigger('click');
-        if (onCoffeeCompletedCallback) onCoffeeCompletedCallback(coffee);
+        if (onCoffeeCompletedCallback) onCoffeeCompletedCallback(coffee.id);
       }, 500);
     }
   }
@@ -495,6 +497,10 @@ define('app/coffee',[
     removeTimer($order.attr('data-orderId'));
     $order.slideUp('fast', function () {
       $(this).remove();
+      if (onCoffeeCancelCallback) {
+        let id = $order.attr('data-orderId');
+        onCoffeeCancelCallback(id);
+      }
       checkEmptyOrders();
     });
   }
@@ -513,6 +519,9 @@ define('app/coffee',[
         return true;
       case event.completed:
         onCoffeeCompletedCallback = fn;
+        return true;
+      case event.cancel:
+        onCoffeeCancelCallback = fn;
         return true;
       default:
         return false;
@@ -534,7 +543,8 @@ define('app/chooseCoffee',['jquery', 'moment', 'app/constants'], function ($, mo
     console.error('handleAddCoffee not registered yet');
   };
 
-  $modal.find('.add-coffee').click(function () {
+  $form.submit(function (e) {
+    e.preventDefault();
     let order = {
       id: `${Date.now()}`,
       personName: $orderBy.val() || 'Guest',
@@ -544,6 +554,10 @@ define('app/chooseCoffee',['jquery', 'moment', 'app/constants'], function ($, mo
     };
     $modal.modal('hide');
     onCoffeeChosenCallback(order);
+  });
+
+  $modal.find('.add-coffee').click(function () {
+    $form.trigger('submit');
   });
 
   $modal.on('hidden.bs.modal', function () {
@@ -576,7 +590,7 @@ define('app/chooseCoffee',['jquery', 'moment', 'app/constants'], function ($, mo
 });
 
 
-define('text!templates/coffee-toast.html',[],function () { return '<div\n  class="toast"\n  style="width: 15rem;"\n  role="alert"\n  aria-live="assertive"\n  aria-atomic="true"\n>\n  <div class="toast-header">\n    <i class="fa fa-coffee mr-3" aria-hidden="true"></i>\n    <strong class="mr-auto">{{title}}</strong>\n    <small>{{ago}}</small>\n    <button\n      type="button"\n      class="ml-2 mb-1 close-toast close"\n      aria-label="Close"\n      aria-label="Close"\n    >\n      <span aria-hidden="true">&times;</span>\n    </button>\n  </div>\n  <div class="toast-body">\n    {{message}}\n  </div>\n</div>\n';});
+define('text!templates/coffee-toast.html',[],function () { return '<div\n  class="toast"\n  style="width: 15rem; white-space: nowrap;"\n  role="alert"\n  aria-live="assertive"\n  aria-atomic="true"\n>\n  <div class="toast-header">\n    <i class="fa fa-coffee mr-3" aria-hidden="true"></i>\n    <strong class="mr-auto">{{title}}</strong>\n    <small>{{ago}}</small>\n    <button\n      type="button"\n      class="ml-2 mb-1 close-toast close"\n      aria-label="Close"\n      aria-label="Close"\n    >\n      <span aria-hidden="true">&times;</span>\n    </button>\n  </div>\n  <div class="toast-body">\n    {{message}}\n  </div>\n</div>\n';});
 
 define('app/notification',[
   'jquery',
@@ -606,9 +620,10 @@ define('app/notification',[
       $toast.find('.close-toast').addClass(toastOptions.textColor);
     }
     $toast.toast(options);
-    $toast.hide(); // overrides bs toast default behaviour
+    // $toast.hide(); // overrides bs toast default behaviour
     $toast.toast('show');
-    $toast.show('slide', { direction: 'right' }, 500);
+    $toast.css('width', '0px');
+    $toast.animate({ width: '15rem' }, 500);
     setTimeout(function () {
       removeToast($toast);
     }, delay);
@@ -641,6 +656,8 @@ define('app/coffeeNotification',['app/notification', 'app/constants'], function 
       case event.completed:
         notifyOrderCompleted(coffee);
         return true;
+      case event.cancel:
+        notifyOrderCancelled(coffee);
       default:
         return false;
     }
@@ -672,7 +689,54 @@ define('app/coffeeNotification',['app/notification', 'app/constants'], function 
     notification.showToast(data, options);
   }
 
+  function notifyOrderCancelled(coffee) {
+    let data = {
+      title: 'Cancelled',
+      ago: 'just now',
+      message: `Order for ${coffee.personName} was cancelled`,
+    };
+    let options = {
+      theme: 'bg-danger',
+      textColor: 'text-white',
+    };
+    notification.showToast(data, options);
+  }
+
   return { notify };
+});
+
+define('app/coffeeStore',[], function () {
+  let coffees = {};
+
+  function add(coffee) {
+    if (coffee.hasOwnProperty('id')) coffees[coffee.id] = coffee;
+  }
+
+  function pop(id) {
+    if (exist(id)) {
+      // shallow copy object
+      let coffee = {};
+      Object.assign(coffee, coffees[id]);
+      remove(id);
+      return coffee;
+    } else return null;
+  }
+
+  function remove(id) {
+    delete coffees[id];
+  }
+
+  function find(id) {
+    if (exist(id)) {
+      return coffees[id];
+    } else return null;
+  }
+
+  function exist(id) {
+    return coffees.hasOwnProperty(id);
+  }
+
+  return { add, remove, pop, find };
 });
 
 define('app/app',[
@@ -681,19 +745,33 @@ define('app/app',[
   'app/chooseCoffee',
   'app/coffeeNotification',
   'app/constants',
-], function ($, coffee, coffeeModal, coffeeNotification, constants) {
+  'app/coffeeStore',
+], function ($, coffee, coffeeModal, coffeeNotification, constants, store) {
   function start() {
     $(document).ready(setupActions);
   }
 
   function setupActions() {
-    coffeeModal.onCoffeeChosen(coffee.handleAddCoffee);
+    coffeeModal.onCoffeeChosen(function (order) {
+      store.add(order);
+      coffee.handleAddCoffee(order);
+    });
 
     let coffeeEvents = constants.events.coffee;
-    let handleEvents = [coffeeEvents.new, coffeeEvents.completed];
+    let handleEvents = [
+      coffeeEvents.new,
+      coffeeEvents.completed,
+      coffeeEvents.cancel,
+    ];
     handleEvents.forEach(function (e) {
-      coffee.on(e, function (coffee) {
-        coffeeNotification.notify(e, coffee);
+      coffee.on(e, function (id) {
+        let coffee = null;
+        if (e !== coffeeEvents.new) {
+          coffee = store.pop(id);
+        } else {
+          coffee = store.find(id);
+        }
+        if (coffee) coffeeNotification.notify(e, coffee);
       });
     });
   }
