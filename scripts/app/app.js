@@ -4,13 +4,17 @@ define([
   'app/chooseCoffee',
   'app/coffeeNotification',
   'app/constants',
-], function ($, coffee, coffeeModal, coffeeNotification, constants) {
+  'app/coffeeStore',
+], function ($, coffee, coffeeModal, coffeeNotification, constants, store) {
   function start() {
     $(document).ready(setupActions);
   }
 
   function setupActions() {
-    coffeeModal.onCoffeeChosen(coffee.handleAddCoffee);
+    coffeeModal.onCoffeeChosen(function (order) {
+      store.add(order);
+      coffee.handleAddCoffee(order);
+    });
 
     let coffeeEvents = constants.events.coffee;
     let handleEvents = [
@@ -19,8 +23,14 @@ define([
       coffeeEvents.cancel,
     ];
     handleEvents.forEach(function (e) {
-      coffee.on(e, function (coffee) {
-        coffeeNotification.notify(e, coffee);
+      coffee.on(e, function (id) {
+        let coffee = null;
+        if (e !== coffeeEvents.new) {
+          coffee = store.pop(id);
+        } else {
+          coffee = store.find(id);
+        }
+        if (coffee) coffeeNotification.notify(e, coffee);
       });
     });
   }

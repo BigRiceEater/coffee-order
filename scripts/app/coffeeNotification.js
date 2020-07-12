@@ -44,11 +44,11 @@ define(['app/notification', 'app/constants'], function (
     notification.showToast(data, options);
   }
 
-  function notifyOrderCancelled() {
+  function notifyOrderCancelled(coffee) {
     let data = {
       title: 'Cancelled',
       ago: 'just now',
-      message: `A coffee was cancelled`,
+      message: `Order for ${coffee.personName} was cancelled`,
     };
     let options = {
       theme: 'bg-danger',

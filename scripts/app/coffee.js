@@ -27,7 +27,7 @@ define([
     timers.push({ for: coffee.id, timer });
 
     if (onCoffeeAddedCallback) {
-      onCoffeeAddedCallback(coffee);
+      onCoffeeAddedCallback(coffee.id);
     }
 
     checkEmptyOrders();
@@ -49,7 +49,7 @@ define([
       // let animation finish, $.animate(cb) still won't work
       setTimeout(function () {
         $order.find('.remove-coffee').trigger('click');
-        if (onCoffeeCompletedCallback) onCoffeeCompletedCallback(coffee);
+        if (onCoffeeCompletedCallback) onCoffeeCompletedCallback(coffee.id);
       }, 500);
     }
   }
@@ -65,7 +65,10 @@ define([
     removeTimer($order.attr('data-orderId'));
     $order.slideUp('fast', function () {
       $(this).remove();
-      if (onCoffeeCancelCallback) onCoffeeCancelCallback();
+      if (onCoffeeCancelCallback) {
+        let id = $order.attr('data-orderId');
+        onCoffeeCancelCallback(id);
+      }
       checkEmptyOrders();
     });
   }
