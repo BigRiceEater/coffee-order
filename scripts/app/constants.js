@@ -9,6 +9,7 @@ define({
     coffee: {
       new: 'new-coffee',
       completed: 'coffee-completed',
+      cancel: 'coffee-cancel',
     },
   },
 });

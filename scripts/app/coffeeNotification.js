@@ -11,6 +11,8 @@ define(['app/notification', 'app/constants'], function (
       case event.completed:
         notifyOrderCompleted(coffee);
         return true;
+      case event.cancel:
+        notifyOrderCancelled(coffee);
       default:
         return false;
     }
@@ -37,6 +39,19 @@ define(['app/notification', 'app/constants'], function (
     };
     let options = {
       theme: 'bg-success',
+      textColor: 'text-white',
+    };
+    notification.showToast(data, options);
+  }
+
+  function notifyOrderCancelled() {
+    let data = {
+      title: 'Cancelled',
+      ago: 'just now',
+      message: `A coffee was cancelled`,
+    };
+    let options = {
+      theme: 'bg-danger',
       textColor: 'text-white',
     };
     notification.showToast(data, options);

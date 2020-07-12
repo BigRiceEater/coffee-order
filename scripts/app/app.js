@@ -13,7 +13,11 @@ define([
     coffeeModal.onCoffeeChosen(coffee.handleAddCoffee);
 
     let coffeeEvents = constants.events.coffee;
-    let handleEvents = [coffeeEvents.new, coffeeEvents.completed];
+    let handleEvents = [
+      coffeeEvents.new,
+      coffeeEvents.completed,
+      coffeeEvents.cancel,
+    ];
     handleEvents.forEach(function (e) {
       coffee.on(e, function (coffee) {
         coffeeNotification.notify(e, coffee);
